@@ -11,7 +11,7 @@ public class Estado {
 	
 	//COLUNAS
 	@Id
-    private long uf;
+    private long uf; //UF É ID DE ESTADO
 	
 	@Column
     private String nome;
