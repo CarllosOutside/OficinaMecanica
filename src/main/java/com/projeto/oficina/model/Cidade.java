@@ -26,8 +26,8 @@ public class Cidade {
 		
 			//CONSTRAINT
 		@ManyToOne //foreign key
-	    @JoinColumn(name = "id_estado") //referencia na coluna id
-		private Estado state_id; //state_id é foreign key que referencia a tabela Estado
+	    @JoinColumn(name = "state_id") //nome da coluna
+		private Estado state_id; //state_id é foreign key que referencia a tabela Estado(id)
 
 		//CONSTRUCTOR
 		public Cidade(long code, String name, Estado state_id) {

@@ -28,7 +28,7 @@ public class Estado {
 	private char uf[];
 		//CONSTRAINT
 	@ManyToOne
-	@JoinColumn(name = "id_regiao")
+	@JoinColumn(name = "region_id")
 	private Regiao region_id; 
 
 	//CONSTRUCTOR

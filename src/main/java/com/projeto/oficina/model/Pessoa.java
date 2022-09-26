@@ -29,8 +29,8 @@ public class Pessoa {
 
 	//CHAVE SECUNDARIA
     @ManyToOne
-    @JoinColumn(name = "cod_cidade") //COLUNA COD_CIDADE DA TABELA CIDADE
-    Cidade cidade; //TABELA CIDADE
+    @JoinColumn(name = "cod_cidade") //nome da coluna fk na tabela pessoa
+    Cidade cidade; //TABELA CIDADE(id)
 
     public Pessoa() {}
     
