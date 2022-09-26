@@ -10,49 +10,64 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "cidade")
+@Table(name = "cities")
 public class Cidade {
 	
 		//COLUNAS
 		@Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
-	    private long cod_cidade;
+		private long id;
 		
 		@Column
-	    private String nome;
+	    private long code;
 		
 		@Column
-		@ManyToOne
-	    @JoinColumn(name = "uf")
-		private Estado estado;
+	    private String name;
+		
+			//CONSTRAINT
+		@Column
+		@ManyToOne //foreign key
+	    @JoinColumn(name = "id") //referencia na coluna id
+		private Estado state_id; //state_id é foreign key que referencia a tabela Estado
 
 		//CONSTRUCTOR
-		public Cidade(String nome, Estado estado) {
-			this.nome = nome;
-			this.estado = estado;
+		public Cidade(long code, String name, Estado state_id) {
+			this.code = code;
+			this.name = name;
+			this.state_id = state_id;
+		}
+
+		//GETTERS E SETTERS
+		public long getCode() {
+			return code;
+		}
+
+		public void setCode(long code) {
+			this.code = code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Estado getState_id() {
+			return state_id;
+		}
+
+		public void setState_id(Estado state_id) {
+			this.state_id = state_id;
+		}
+
+		public long getId() {
+			return id;
 		}
 		
-		//GETTERS E SETTERS
-		public String getNome() {
-			return nome;
-		}
-
-
-		public void setNome(String nome) {
-			this.nome = nome;
-		}
-
-		public Estado getEstado() {
-			return estado;
-		}
-
-		public void setEstado(Estado estado) {
-			this.estado = estado;
-		}
-
-		public long getCod_cidade() {
-			return cod_cidade;
-		}
+		
+		
 		
 		
 

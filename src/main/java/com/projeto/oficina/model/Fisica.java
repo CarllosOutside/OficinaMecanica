@@ -17,7 +17,7 @@ public class Fisica {
 
 	//COLUNAS
 	@Id //PK e FK
-	@OneToOne //UMA PESSOA FISICA PODE SER ASSOCIADA À UMA JURIDICA, E VICE-VERSA
+	@OneToOne //UMA PESSOA FISICA PODE SER ASSOCIADA À UMA PESSOA, E VICE-VERSA
 	@JoinColumn(name = "cod_pessoa") //COLUNA cod_pessoa DA TABELA PESSOA
 	Pessoa cod_pessoa; //TABELA PESSOA -> A CHAVE SECUNDARIA cod_pessoa FICA ARMAZENADA NA TABELA FISICA
 	//PARA EXISTIR PESSOA FÍSICA, DEVE EXISTIR PESSOA
@@ -25,4 +25,23 @@ public class Fisica {
 	@Column
 	@Cpf
 	String cpf;
+	
+	//CONSTRUCTOR
+	public Fisica(String cpf) {
+		this.cpf = cpf;
+	}
+
+	//GETTERS E SETTERS
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public Pessoa getCod_pessoa() {
+		return cod_pessoa;
+	}
+	
 }

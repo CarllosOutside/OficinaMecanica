@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.projeto.oficina.model.Cidade;
 
-//ARMAZENA NA TABELA CIDADE, COM COD_CIDADE DO TIPO LONG
+//ARMAZENA NA TABELA CIDADE, COM ID DO TIPO LONG
 public interface CidadeRepo extends JpaRepository<Cidade, Long> {
 
 	//RETORNA LISTA DE CIDADES POR NOME
