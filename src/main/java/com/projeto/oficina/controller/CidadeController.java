@@ -65,7 +65,7 @@ public class CidadeController {
             if (nome == null) {
                 cidaderepo.findAll().forEach(cidadesList::add); //ADICIONA TODOS AS CIDADES DO BANCO NA LISTA
             } else { //SE HÁ NOME
-                cidaderepo.findByNomeContaining(nome).forEach(cidadesList::add);
+                cidaderepo.findByNameContaining(nome).forEach(cidadesList::add);
             }
  
             //SE NÃO HOUVEREM CIDADES COM O NOME ESPECIFICADO
@@ -90,7 +90,7 @@ public class CidadeController {
 	{	
 		try {
 			//CRIA OBJETO CIDADE COM A JSON E SALVA NO BANCO
-            Cidade _cidade = cidaderepo.save( new Cidade(novaCidade.getNome(),novaCidade.getEstado()) );
+            Cidade _cidade = cidaderepo.save( new Cidade(novaCidade.getCode(),novaCidade.getName(),novaCidade.getState_id()) );
             //RETORNA MENSAGEM DE SUCESSO
             return new ResponseEntity<>(_cidade, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -110,8 +110,9 @@ public class CidadeController {
         if (cidadeAntiga.isPresent()) {
             Cidade _cidade = cidadeAntiga.get(); //SALVA CIDADE ANTIGA COM SEU ID EM _CIDADE
             //ALTERA OS DADOS
-            _cidade.setNome(cidadeNova.getNome());
-            _cidade.setEstado(cidadeNova.getEstado());
+            _cidade.setCode(cidadeNova.getCode());
+            _cidade.setName(cidadeNova.getName());
+            _cidade.setState_id(cidadeNova.getState_id());
             //SOBRESCREVE A CIDADE ANTIGA NO BANCO DE DADOS(AO SALVAR COM O MESMO ID)
             return new ResponseEntity<>(cidaderepo.save(_cidade), HttpStatus.OK); //RETORNA MENSAGEM DE SUCESSO
         } else {

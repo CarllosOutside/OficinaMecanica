@@ -1,6 +1,11 @@
 package com.projeto.oficina.model;
 
+
+import java.io.Serializable;
+
 import javax.persistence.Column;
+
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -11,16 +16,18 @@ import javax.persistence.Table;
 import com.projeto.oficina.Cpf;
 
 //TABELA PESSOA FISICA
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "fisica")
-public class Fisica {
+public class Fisica implements Serializable{
 
 	//COLUNAS
-	@Id //PK e FK
+	@EmbeddedId //PK e FK
 	@OneToOne //UMA PESSOA FISICA PODE SER ASSOCIADA À UMA PESSOA, E VICE-VERSA
 	@JoinColumn(name = "cod_pessoa") //COLUNA cod_pessoa DA TABELA PESSOA
 	Pessoa cod_pessoa; //TABELA PESSOA -> A CHAVE SECUNDARIA cod_pessoa FICA ARMAZENADA NA TABELA FISICA
 	//PARA EXISTIR PESSOA FÍSICA, DEVE EXISTIR PESSOA
+	
 	
 	@Column
 	@Cpf

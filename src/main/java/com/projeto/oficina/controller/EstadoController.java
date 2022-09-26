@@ -65,7 +65,7 @@ public class EstadoController {
             if (nome == null) {
                 estadorepo.findAll().forEach(estadosList::add); //ADICIONA TODOS OS ESTADOS DO BANCO NA LISTA
             } else { //SE HÁ NOME
-                estadorepo.findByNomeContaining(nome).forEach(estadosList::add);
+                estadorepo.findByNameContaining(nome).forEach(estadosList::add);
             }
  
             //SE NÃO HOUVEREM ESTADOS COM O NOME ESPECIFICADO
@@ -90,7 +90,7 @@ public class EstadoController {
 	{
 		try {
 			//CRIA OBJETO ESTADO COM A JSON E SALVA NO BANCO
-            Estado _estado = estadorepo.save( new Estado(novoestado.getNome(),novoestado.getUf()) );
+            Estado _estado = estadorepo.save( new Estado(novoestado.getUf_code(),novoestado.getName(),novoestado.getUf(), novoestado.getRegion_id()) );
             //RETORNA MENSAGEM DE SUCESSO
             return new ResponseEntity<>(_estado, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -110,7 +110,7 @@ public class EstadoController {
         if (estadoAntigo.isPresent()) {
             Estado _estado = estadoAntigo.get(); //SALVA ESTADO ANTIGO COM SEU ID EM _ESTADO
             //ALTERA OS DADOS
-            _estado.setNome(estadoNovo.getNome());
+            _estado.setName(estadoNovo.getName());
             //SOBRESCREVE O ESTADO ANTIGO NO BANCO DE DADOS(AO SALVAR COM O MESMO ID)
             return new ResponseEntity<>(estadorepo.save(_estado), HttpStatus.OK); //RETORNA MENSAGEM DE SUCESSO
         } else {

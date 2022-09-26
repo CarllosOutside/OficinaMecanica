@@ -28,7 +28,6 @@ public class Pessoa {
     private String telefone;
 
 	//CHAVE SECUNDARIA
-    @Column
     @ManyToOne
     @JoinColumn(name = "cod_cidade") //COLUNA COD_CIDADE DA TABELA CIDADE
     Cidade cidade; //TABELA CIDADE

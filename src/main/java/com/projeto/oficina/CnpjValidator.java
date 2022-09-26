@@ -3,7 +3,7 @@ package com.projeto.oficina;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class CnpjValidator implements ConstraintValidator<Cpf, String>{
+public class CnpjValidator implements ConstraintValidator<Cnpj, String>{
 	// 5,4,3,2,9,8,7,6,5,4,3 e 2 
 	private final int[] PESO_CNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4,3,2 }; //LENGTH = 13
 
