@@ -36,7 +36,7 @@ public class EstadoController {
 	/*
 	 * ENCONTRA UM ESTADO NO BANCO PELO SEU CODIGO UF
 	 * */
-	@Operation(summary = "Busca um Estado(uf)", description = "Retorna um JSON Estado com seu código uf especificado")
+	@Operation(summary = "Busca um Estado(id)", description = "Retorna um JSON Estado com seu código id especificado")
 	@GetMapping(path="/estados/{uf}") //ENDEREÇO DE REQUISIÇÃO GET
 	public ResponseEntity<Estado> getEstadoByUf(@Parameter(description = "Uf do Estado que está sendo buscado") @PathVariable("uf") long uf) //UF É UMA PATHVARIABLE 
 	{

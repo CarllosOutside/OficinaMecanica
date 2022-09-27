@@ -5,10 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.projeto.oficina.Cnpj;
 
@@ -27,10 +27,12 @@ public class Juridica implements Serializable{
 		
 		@Column
 		@Cnpj
+		@NotNull(message = "Pessoa jurídica deve possuir cnpj")
 		String cnpj;
 		
 		
 		//CONSTRUCTOR
+		public Juridica() {}
 		public Juridica(String cnpj) {
 			this.cnpj = cnpj;
 		}

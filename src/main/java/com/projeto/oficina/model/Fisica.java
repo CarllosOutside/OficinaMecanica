@@ -7,11 +7,11 @@ import javax.persistence.Column;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.projeto.oficina.Cpf;
 
@@ -31,9 +31,11 @@ public class Fisica implements Serializable{
 	
 	@Column
 	@Cpf
+	@NotNull(message = "Pessoa física deve possuir cpf")
 	String cpf;
 	
 	//CONSTRUCTOR
+	public Fisica() {}
 	public Fisica(String cpf) {
 		this.cpf = cpf;
 	}

@@ -65,11 +65,13 @@ public class CidadeController {
             if (nome == null) {
                 cidaderepo.findAll().forEach(cidadesList::add); //ADICIONA TODOS AS CIDADES DO BANCO NA LISTA
             } else { //SE HÁ NOME
+            	//System.out.print("O nome não é nulo");
                 cidaderepo.findByNameContaining(nome).forEach(cidadesList::add);
             }
- 
+            
             //SE NÃO HOUVEREM CIDADES COM O NOME ESPECIFICADO
             if (cidadesList.isEmpty()) {
+            	//System.out.print("Sem cidades");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT); //LISTA VAZIA
             }
             //RETORNA A LISTA DE ESTADOS
@@ -77,6 +79,7 @@ public class CidadeController {
  
  
         } catch (Exception e) {
+        	System.out.print(e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

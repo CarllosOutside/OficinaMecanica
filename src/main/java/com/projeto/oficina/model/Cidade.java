@@ -29,7 +29,8 @@ public class Cidade {
 	    @JoinColumn(name = "state_id") //nome da coluna
 		private Estado state_id; //state_id é foreign key que referencia a tabela Estado(id)
 
-		//CONSTRUCTOR
+		//CONSTRUCTORS
+		public Cidade() {}
 		public Cidade(long code, String name, Estado state_id) {
 			this.code = code;
 			this.name = name;

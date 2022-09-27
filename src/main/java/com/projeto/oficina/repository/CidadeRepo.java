@@ -10,5 +10,5 @@ import com.projeto.oficina.model.Cidade;
 public interface CidadeRepo extends JpaRepository<Cidade, Long> {
 
 	//RETORNA LISTA DE CIDADES POR NOME
-	List<Cidade> findByNameContaining(String nome);
+	List<Cidade> findByNameContaining(String name);
 }

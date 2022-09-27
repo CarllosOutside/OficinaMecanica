@@ -31,7 +31,8 @@ public class Estado {
 	@JoinColumn(name = "region_id")
 	private Regiao region_id; 
 
-	//CONSTRUCTOR
+	//CONSTRUCTORS
+	public Estado() {}
 	public Estado(long uf_code, String name, char[] uf, Regiao region_id) {
 		this.uf_code = uf_code;
 		this.name = name;
