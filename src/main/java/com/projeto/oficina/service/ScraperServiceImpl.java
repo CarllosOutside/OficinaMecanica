@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class ScraperServiceImpl implements ScraperService {
     //Reading data from property file to a list
-    @Value("#{'${website.urls}'.split(',')}")
+	@Value("#{'${website.urls}'.split(',')}")
     List<String> urls;
 
     @Override
@@ -27,6 +27,7 @@ public class ScraperServiceImpl implements ScraperService {
         for (String url: urls) {
 
             if (url.contains("placafipe")) {
+            	System.out.println("URL do site: "+url);
                 //method to extract data from placafipe
                 extractDataFromPlacaFipe(veiculo, url + placa);
             } 
@@ -38,7 +39,7 @@ public class ScraperServiceImpl implements ScraperService {
     private void extractDataFromPlacaFipe(Veiculo veiculo, String url) {
         try {
             //loading the HTML to a Document Object
-            Document document = Jsoup.connect(url).get();
+            Document document = Jsoup.connect(url).userAgent("Mozilla").get(); 
 //Selecting the element which contains the fipe table
             Element element = document.getElementsByClass("fipeTablePriceDetail").first();
             //getting all the <tr> elements inside the table
@@ -49,7 +50,7 @@ public class ScraperServiceImpl implements ScraperService {
             	String campo = linhas.child(0).text();
             	//pega o td contendo o dado
             	String dado = linhas.child(1).text();
-            	
+            	System.out.println("Campo: "+campo);
                 if (StringUtils.isNotEmpty(campo) && StringUtils.isNotEmpty(dado)) {
                    //mapping data to our model class
                     if(campo.contains("Marca")) {
@@ -67,6 +68,7 @@ public class ScraperServiceImpl implements ScraperService {
                 }
             }
         } catch (IOException ex) {
+        	System.out.println("erro: "+ex);
             ex.printStackTrace();
         }
     }
