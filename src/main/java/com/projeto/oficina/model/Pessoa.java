@@ -12,7 +12,7 @@ import javax.persistence.Table;
 //TABELA PESSOA
 @Entity
 @Table(name = "pessoa")
-public class Pessoa {
+public class Pessoa{
 	//COLUNAS
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)

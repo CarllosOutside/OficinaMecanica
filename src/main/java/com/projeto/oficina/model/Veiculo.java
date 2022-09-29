@@ -1,7 +1,10 @@
 package com.projeto.oficina.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -11,20 +14,29 @@ public class Veiculo {
 	@Id
 	private String placa;
 	
+	@Column
 	private String marca;
 
+	@Column
 	private String modelo;
 	
+	@Column
 	private String ano;
 	
+	@Column
 	private String cor;
 	
-	public Veiculo(String placa, String marca, String modelo, String ano, String cor) {
+	@ManyToOne //foreign key
+    @JoinColumn(name = "cod_cliente")
+	private Cliente cliente;
+	
+	public Veiculo(String placa, String marca, String modelo, String ano, String cor, Cliente cliente) {
 		this.placa = placa;
 		this.marca = marca;
 		this.modelo = modelo;
 		this.ano = ano;
 		this.cor = cor;
+		this.cliente = cliente;
 	}
 
 	public String getMarca() {

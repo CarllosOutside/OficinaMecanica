@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "cliente")
@@ -17,6 +18,7 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private long cod_cliente;
 	
+	@NotNull
 	@OneToOne
     @JoinColumn(name = "cod_pessoa")
 	Pessoa pessoa;
