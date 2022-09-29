@@ -23,6 +23,7 @@ public class ScraperServiceImpl implements ScraperService {
     @Override
     public Veiculo getVehicleByPlaca(String placa) {
     	Veiculo veiculo = new Veiculo();
+    	veiculo.setPlaca(placa);
         //Traversing through the urls
         for (String url: urls) {
 
