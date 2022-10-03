@@ -23,31 +23,61 @@ import com.projeto.oficina.Cpf;
 @Table(name = "fisica")
 @IdClass(FisicaId.class)
 public class Fisica implements Serializable{
-	 private static final long serialVersionUID = -909206262878526790L;
-	//COLUNAS
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
-	    private long id;
+	 private static final long serialVersionUID = -909206262878526790L; 
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id; 
 	 
 	@Id //PK e FK
+	@Column(name = "cod_pessoa")
+	private long cod_pessoa;
+	
 	@OneToOne
-	@JoinColumn(name = "cod_pessoa") //COLUNA cod_pessoa DA TABELA PESSOA
-	private Pessoa cod_pessoa; //TABELA PESSOA -> A CHAVE SECUNDARIA cod_pessoa FICA ARMAZENADA NA TABELA FISICA
-	//PARA EXISTIR PESSOA FÍSICA, DEVE EXISTIR PESSOA
+	@JoinColumn(name = "cod_pessoa", insertable = false, updatable = false) //junta à tabela acima
+	private Pessoa pessoa; // é preciso haver uma pessoa
 	
 	
 	@Column
 	@Cpf
 	@NotNull(message = "Pessoa física deve possuir cpf")
 	String cpf;
-	
+
+
 	//CONSTRUCTOR
 	public Fisica() {}
 	
 
-	public Fisica(Pessoa cod_pessoa, @NotNull(message = "Pessoa física deve possuir cpf") String cpf) {
+	public long getId() {
+		return id;
+	}
+
+
+	public Fisica(long cod_pessoa, @NotNull(message = "Pessoa física deve possuir cpf") String cpf) {
 		this.cod_pessoa = cod_pessoa;
 		this.cpf = cpf;
+	}
+
+
+	public Fisica(long cod_pessoa, Pessoa pessoa, @NotNull(message = "Pessoa física deve possuir cpf") String cpf) {
+		this.cod_pessoa = cod_pessoa;
+		this.pessoa = pessoa;
+		this.cpf = cpf;
+	}
+
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}
+
+
+	public void setCod_pessoa(long cod_pessoa) {
+		this.cod_pessoa = cod_pessoa;
 	}
 
 
@@ -60,7 +90,7 @@ public class Fisica implements Serializable{
 		this.cpf = cpf;
 	}
 
-	public Pessoa getCod_pessoa() {
+	public long getCod_pessoa() {
 		return cod_pessoa;
 	}
 	

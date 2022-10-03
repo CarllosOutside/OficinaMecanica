@@ -50,7 +50,7 @@ public class ClienteController {
 			 * ENCONTRA CLIENTE POR COD PESSOA
 			 * */
 			@Operation(summary = "Busca cliente(cod_pessoa)", description = "Retorna um JSON Cliente")
-			@GetMapping(path="/clientes/{cod_pessoa}") //ENDEREÇO DE REQUISIÇÃO GET
+			@GetMapping(path="/clientes/pessoa/{cod_pessoa}") //ENDEREÇO DE REQUISIÇÃO GET
 			public ResponseEntity<Cliente> getClienteByCod_Pessoa(@Parameter(description = "Código da pessoa buscada") @PathVariable("cod_pessoa") long cod_pessoa)  
 			{
 				//PROCURA NO BANCO NA TABELA PESSOA
@@ -71,9 +71,9 @@ public class ClienteController {
 			
 			/*
 			 * ENCONTRA CLIENTE POR CPF
-			 * */
+			 * 
 			@Operation(summary = "Busca cliente(cpf)", description = "Retorna um JSON Cliente")
-			@GetMapping(path="/clientes/{cpf}") //ENDEREÇO DE REQUISIÇÃO GET
+			@GetMapping(path="/clientes/fisico/{cpf}") //ENDEREÇO DE REQUISIÇÃO GET
 			public ResponseEntity<Cliente> getClienteByCpf(@Parameter(description = "Cpf da pessoa buscada") @PathVariable("cpf") String cpf)  
 			{
 				//VERIFICA A EXISTENCIA DA P FISICA
@@ -92,12 +92,12 @@ public class ClienteController {
 		        } else {
 		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		        }
-		    }
+		    }*/
 			/*
 			 * ENCONTRA CLIENTE POR CNPJ
 			 * */
 			@Operation(summary = "Busca cliente(cnpj)", description = "Retorna um JSON Cliente")
-			@GetMapping(path="/clientes/{cnpj}") //ENDEREÇO DE REQUISIÇÃO GET
+			@GetMapping(path="/clientes/juridico/{cnpj}") //ENDEREÇO DE REQUISIÇÃO GET
 			public ResponseEntity<Cliente> getClienteByCnpj(@Parameter(description = "CNPJ da pessoa buscada") @PathVariable("cnpj") String cnpj)  
 			{
 				//VERIFICA A EXISTENCIA DA P FISICA
@@ -173,12 +173,12 @@ public class ClienteController {
 			{
 				//PROCURA NO BANCO 
 		        Optional<Cliente> cliente = crepo.findById(cod_cliente);
-		 
 		        if (cliente.isPresent()) {
 		            return new ResponseEntity<>(cliente.get(), HttpStatus.OK); 
 		        } else {
 		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		        }
+				
 		    }
 			
 			
