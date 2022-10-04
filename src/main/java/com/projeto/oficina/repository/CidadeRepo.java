@@ -11,4 +11,5 @@ public interface CidadeRepo extends JpaRepository<Cidade, Long> {
 
 	//RETORNA LISTA DE CIDADES POR NOME
 	List<Cidade> findByNameContaining(String name);
+	List<Cidade> findByEstado(long cod_estado);
 }

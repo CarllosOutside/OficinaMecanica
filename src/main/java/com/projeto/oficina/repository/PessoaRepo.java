@@ -1,7 +1,9 @@
 package com.projeto.oficina.repository;
 
-import java.util.List;
+//import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.projeto.oficina.model.Pessoa;
@@ -10,5 +12,6 @@ import com.projeto.oficina.model.Pessoa;
 public interface PessoaRepo extends JpaRepository<Pessoa, Long> {
 
 	//RETORNA LISTA DE PESSOAS POR NOME
-	List<Pessoa> findByNomeContaining(String nome);
+	//List<Pessoa> findByNomeContaining(String nome);
+	Page<Pessoa> findByNomeContaining(String nome, Pageable pageable);
 }

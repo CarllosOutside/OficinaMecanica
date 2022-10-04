@@ -24,9 +24,11 @@ public class Cidade {
 		@Column
 	    private String name;
 		
+		@Column(name = "state_id")
+		private long estado;
 			//CONSTRAINT
 		@ManyToOne //foreign key
-	    @JoinColumn(name = "state_id") //nome da coluna
+	    @JoinColumn(name = "state_id", insertable = false, updatable = false) //nome da coluna
 		private Estado state_id; //state_id é foreign key que referencia a tabela Estado(id)
 
 		//CONSTRUCTORS
@@ -46,6 +48,18 @@ public class Cidade {
 			this.code = code;
 		}
 
+		public Cidade(long code, String name, long estado, Estado state_id) {
+			this.code = code;
+			this.name = name;
+			this.estado = estado;
+			this.state_id = state_id;
+		}
+		public long getEstado() {
+			return estado;
+		}
+		public void setEstado(long estado) {
+			this.estado = estado;
+		}
 		public String getName() {
 			return name;
 		}

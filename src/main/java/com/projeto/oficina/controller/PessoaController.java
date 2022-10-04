@@ -1,12 +1,18 @@
 package com.projeto.oficina.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +30,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 //RECEBE E RETORNA REQUISICOES HTTP ATRAVES DO ENDEREÇO /API
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api")
 public class PessoaController {
@@ -55,25 +62,35 @@ public class PessoaController {
 		 * */
 		@Operation(summary = "Busca uma/várias Pessoa/s(por nomes que ela contém)", description = "Retorna uma Pessoa cujo nome é especificado, se nenhum for especificado, retorna uma lista de pessoas")
 		@GetMapping(path="/pessoas") //ENDEREÇO DE BUSCA GET
-	    public ResponseEntity<List<Pessoa>> getAllPessoas(@Parameter(description = "Nome da pessoa que está sendo buscada") @RequestParam(required = false) String nome) 
+	    public ResponseEntity<Map<String, Object>> getAllPessoas(@Parameter(description = "Nome da pessoa que está sendo buscada") @RequestParam(required = false) String nome, @RequestParam(defaultValue = "0") int page,
+	            @RequestParam(defaultValue = "3") int size) 
 		{
 	        try {
 	        	//CRIA A LISTA
 	            List<Pessoa> pessoasList = new ArrayList<Pessoa>();
+	            Pageable paging = PageRequest.of(page, size);
+	            Page<Pessoa> paginaPessoas;
 	            
 	            //SE NENHUM NOME FOI ESPECIFICADO
 	            if (nome == null) {
-	                pessoarepo.findAll().forEach(pessoasList::add); //ADICIONA TODOS AS PESSOAS DO BANCO NA LISTA
+	            	paginaPessoas = pessoarepo.findAll(paging); //ADICIONA TODOS AS PESSOAS DO BANCO NA LISTA
 	            } else { //SE HÁ NOME
-	                pessoarepo.findByNomeContaining(nome).forEach(pessoasList::add);
+	            	paginaPessoas = pessoarepo.findByNomeContaining(nome, paging);
 	            }
 	 
+	            pessoasList = paginaPessoas.getContent();
+	            
+	            Map<String, Object> response = new HashMap<>();
+	            response.put("clientes", pessoasList);
+	            response.put("currentPage", paginaPessoas.getNumber());
+	            response.put("totalItems", paginaPessoas.getTotalElements());
+	            response.put("totalPages", paginaPessoas.getTotalPages());
 	            //SE NÃO HOUVEREM PESSOAS COM O NOME ESPECIFICADO
 	            if (pessoasList.isEmpty()) {
 	                return new ResponseEntity<>(HttpStatus.NO_CONTENT); //LISTA VAZIA
 	            }
 	            //RETORNA A LISTA DE PESSOAS
-	            return new ResponseEntity<>(pessoasList, HttpStatus.OK);
+	            return new ResponseEntity<>(response, HttpStatus.OK);
 	 
 	 
 	        } catch (Exception e) {

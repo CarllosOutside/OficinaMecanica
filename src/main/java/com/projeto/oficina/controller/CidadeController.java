@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 //RECEBE E RETORNA REQUISICOES HTTP ATRAVES DO ENDEREÇO /API
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api")
 public class CidadeController {
@@ -48,6 +50,22 @@ public class CidadeController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+	/*
+	 * ENCONTRA CIDADES NO BANCO PELO SEU ESTADO
+	 * */
+	@Operation(summary = "Busca  cidades(cod_estado)", description = "Retorna lista de Cidades pertencentes ao Estado")
+	@GetMapping(path="estado/cidades/{cod_estado}") //ENDEREÇO DE REQUISIÇÃO GET
+	public ResponseEntity<List<Cidade>> getCidadeByEstado(@Parameter(description = "Código do estado") @PathVariable("cod_estado") long cod_estado) //COD_CIDADE É UMA PATHVARIABLE 
+	{
+		List<Cidade> cidadesList = new ArrayList<Cidade>();
+		cidaderepo.findByEstado(cod_estado).forEach(cidadesList::add);
+		if (cidadesList.isEmpty()) {
+        	//System.out.print("Sem cidades");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); //LISTA VAZIA
+        }
+        //RETORNA A LISTA DE ESTADOS
+        return new ResponseEntity<>(cidadesList, HttpStatus.OK);
     }
 	
 	/*
