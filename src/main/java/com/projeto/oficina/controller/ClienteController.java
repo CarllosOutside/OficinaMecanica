@@ -1,10 +1,15 @@
 package com.projeto.oficina.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -126,39 +131,36 @@ public class ClienteController {
 			 * */
 			@Operation(summary = "Busca uma/várias Cliente/s(por nomes que ela contém)", description = "Retorna uma Cliente cujo nome é especificado, se nenhum for especificado, retorna uma lista de clientes")
 			@GetMapping(path="/clientes") //ENDEREÇO DE BUSCA GET
-		    public ResponseEntity<List<Cliente>> getAllClientes(@Parameter(description = "Nome da cliente que está sendo buscada") @RequestParam(required = false) String nome) 
+		    public ResponseEntity<Map<String, Object>> getAllClientes(@Parameter(description = "Nome da cliente que está sendo buscada") @RequestParam(required = false) String nome, @RequestParam(defaultValue = "0") int page,
+		            @RequestParam(defaultValue = "3") int size) 
 			{
 		        try {
 		        	//CRIA A LISTA
 		            List<Cliente> clientesList = new ArrayList<Cliente>();
-		            List<Pessoa> pessoasList = new ArrayList<Pessoa>();
+		            Pageable paging = PageRequest.of(page, size);
+		            Page<Cliente> paginaClientes;
+		            
 		            //SE NENHUM NOME FOI ESPECIFICADO
 		            if (nome == null) {
-		                prepo.findAll().forEach(pessoasList::add); //ADICIONA TODOS AS PESSOAS DO BANCO NA LISTA
-		                for(Pessoa pessoa : pessoasList) { //PARA CADA PESSOA DA LISTA
-		                	Optional<Cliente> cliente = crepo.findByPessoa(pessoa); //VERIFICA SE CLIENTE TEM JSON/VINCULADO DA PESSOA
-				        	if (cliente.isPresent()) {
-					            clientesList.add(cliente.get()); //ADICIONA Á LISTA DE CLIENTES SE A PESSOA FOR CLIENTE
-					        }
-		                	
-		                }
+		            	paginaClientes = crepo.findAll(paging);
 		            } else { //SE HÁ NOME
-		                prepo.findByNomeContaining(nome).forEach(pessoasList::add);
-		                for(Pessoa pessoa : pessoasList) {
-		                	Optional<Cliente> cliente = crepo.findByPessoa(pessoa);
-				        	if (cliente.isPresent()) {
-					            clientesList.add(cliente.get()); 
-					        }
-		                	
-		                }
+		            	paginaClientes = crepo.findAllByPessoaNomeContaining(nome, paging);
 		            }
 		 
+		            clientesList = paginaClientes.getContent();
+		            
+		            Map<String, Object> response = new HashMap<>();
+		            response.put("clientes", clientesList);
+		            response.put("currentPage", paginaClientes.getNumber());
+		            response.put("totalItems", paginaClientes.getTotalElements());
+		            response.put("totalPages", paginaClientes.getTotalPages());
+		            
 		            //SE NÃO HOUVEREM PESSOAS COM O NOME ESPECIFICADO
 		            if (clientesList.isEmpty()) {
 		                return new ResponseEntity<>(HttpStatus.NO_CONTENT); //LISTA VAZIA
 		            }
 		            //RETORNA A LISTA DE CLIENTES
-		            return new ResponseEntity<>(clientesList, HttpStatus.OK);
+		            return new ResponseEntity<>(response, HttpStatus.OK);
 		 
 		 
 		        } catch (Exception e) {
