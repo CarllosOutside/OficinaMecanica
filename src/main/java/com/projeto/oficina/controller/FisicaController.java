@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.oficina.model.Fisica;
 import com.projeto.oficina.model.Pessoa;
+import com.projeto.oficina.model.Veiculo;
 import com.projeto.oficina.repository.FisicaRepo;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -94,4 +95,19 @@ public class FisicaController {
 				
 				
 			}
+			
+			
+			@Operation(summary = "Busca pf por cpf", description = "Retorna um JSON")
+			@GetMapping(path="/fisicas/{cpf}") //ENDEREÇO DE REQUISIÇÃO GET
+			public ResponseEntity<Fisica> getFisicaByCpf(@Parameter(description = "Cpf") @PathVariable("cpf") String cpf) 
+			{
+				//PROCURA NO BANCO NA TABELA VEICULO
+		        Optional<Fisica> fisica = frepo.findByCpf(cpf);
+		 
+		        if (fisica.isPresent()) {
+		            return new ResponseEntity<>(fisica.get(), HttpStatus.OK); //RETORNA OBJETO
+		        } else {
+		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		        }
+		    }
 }

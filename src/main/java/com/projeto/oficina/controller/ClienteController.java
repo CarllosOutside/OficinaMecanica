@@ -102,7 +102,7 @@ public class ClienteController {
 		    }*/
 			/*
 			 * ENCONTRA CLIENTE POR CNPJ
-			 * */
+			 * 
 			@Operation(summary = "Busca cliente(cnpj)", description = "Retorna um JSON Cliente")
 			@GetMapping(path="/clientes/juridico/{cnpj}") //ENDEREÇO DE REQUISIÇÃO GET
 			public ResponseEntity<Cliente> getClienteByCnpj(@Parameter(description = "CNPJ da pessoa buscada") @PathVariable("cnpj") String cnpj)  
@@ -124,7 +124,7 @@ public class ClienteController {
 		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		        }
 		    }
-			
+			*/
 			
 			/*
 			 * ENCONTRA UMA CLIENTE/LISTA DE CLIENTES NO BANCO PELO SEU NOME 

@@ -22,7 +22,7 @@ public class CnpjValidator implements ConstraintValidator<Cnpj, String>{
 		}
 		//calculos dos verificadores
 		Integer digito1 = calcularDigito(cnpjSomenteDigitos.substring(0, 12), PESO_CNPJ);
-		Integer digito2 = calcularDigito(cnpjSomenteDigitos.substring(0, 13) + digito1, PESO_CNPJ);
+		Integer digito2 = calcularDigito(cnpjSomenteDigitos.substring(0, 12) + digito1, PESO_CNPJ);
 		//verifica se digitos VERIFICAFORES batem COM OS CALULADOS
 		return cnpjSomenteDigitos.equals(cnpjSomenteDigitos.substring(0, 12) + digito1.toString() + digito2.toString());
 	}

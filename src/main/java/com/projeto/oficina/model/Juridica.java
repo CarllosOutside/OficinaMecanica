@@ -21,14 +21,18 @@ import com.projeto.oficina.Cnpj;
 @Table(name = "juridica")
 @IdClass(JuridicaId.class)
 public class Juridica implements Serializable{
+	
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private long id;
-	//COLUNAS
-		@Id //PK e FK
-		@OneToOne //UMA PESSOA JURIDICA PODE SER ASSOCIAD A À UMA PESSOA, E VICE-VERSA
-		@JoinColumn(name = "cod_pessoa") //COLUNA cod_pessoa DA TABELA PESSOA
-		private Pessoa cod_pessoa; //TABELA PESSOA -> A CHAVE SECUNDARIA cod_pessoa FICA ARMAZENADA NA TABELA JURIDICA
+	 
+	 @Id
+	 @Column(name = "cod_pessoa")
+	 private long cod_pessoa;
+
+	 @OneToOne
+		@JoinColumn(name = "cod_pessoa", insertable = false, updatable = false) //junta à tabela acima
+		private Pessoa pessoa; //TABELA PESSOA -> A CHAVE SECUNDARIA cod_pessoa FICA ARMAZENADA NA TABELA JURIDICA
 		//PARA EXISTIR PESSOA JURIDICA, DEVE EXISTIR PESSOA
 		
 		@Column
@@ -51,8 +55,31 @@ public class Juridica implements Serializable{
 		public void setCnpj(String cnpj) {
 			this.cnpj = cnpj;
 		}
-
-		public Pessoa getCod_pessoa() {
+		public long getCod_pessoa() {
 			return cod_pessoa;
 		}
+		public void setCod_pessoa(long cod_pessoa) {
+			this.cod_pessoa = cod_pessoa;
+		}
+		public Pessoa getPessoa() {
+			return pessoa;
+		}
+		public void setPessoa(Pessoa pessoa) {
+			this.pessoa = pessoa;
+		}
+		public long getId() {
+			return id;
+		}
+		public Juridica(long cod_pessoa, Pessoa pessoa,
+				@NotNull(message = "Pessoa jurídica deve possuir cnpj") String cnpj) {
+			super();
+			this.cod_pessoa = cod_pessoa;
+			this.pessoa = pessoa;
+			this.cnpj = cnpj;
+		}
+		public Juridica(long cod_pessoa, @NotNull(message = "Pessoa jurídica deve possuir cnpj") String cnpj) {
+			this.cod_pessoa = cod_pessoa;
+			this.cnpj = cnpj;
+		}
+
 }
