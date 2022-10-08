@@ -28,7 +28,7 @@ public class Juridica implements Serializable{
 	 
 	 @Id
 	 @Column(name = "cod_pessoa")
-	 private long cod_pessoa;
+	 private long codPessoa;
 
 	 @OneToOne
 		@JoinColumn(name = "cod_pessoa", insertable = false, updatable = false) //junta à tabela acima
@@ -55,11 +55,11 @@ public class Juridica implements Serializable{
 		public void setCnpj(String cnpj) {
 			this.cnpj = cnpj;
 		}
-		public long getCod_pessoa() {
-			return cod_pessoa;
+		public long getCodPessoa() {
+			return codPessoa;
 		}
-		public void setCod_pessoa(long cod_pessoa) {
-			this.cod_pessoa = cod_pessoa;
+		public void setCodPessoa(long codPessoa) {
+			this.codPessoa = codPessoa;
 		}
 		public Pessoa getPessoa() {
 			return pessoa;
@@ -70,15 +70,15 @@ public class Juridica implements Serializable{
 		public long getId() {
 			return id;
 		}
-		public Juridica(long cod_pessoa, Pessoa pessoa,
+		public Juridica(long codPessoa, Pessoa pessoa,
 				@NotNull(message = "Pessoa jurídica deve possuir cnpj") String cnpj) {
 			super();
-			this.cod_pessoa = cod_pessoa;
+			this.codPessoa = codPessoa;
 			this.pessoa = pessoa;
 			this.cnpj = cnpj;
 		}
-		public Juridica(long cod_pessoa, @NotNull(message = "Pessoa jurídica deve possuir cnpj") String cnpj) {
-			this.cod_pessoa = cod_pessoa;
+		public Juridica(long codPessoa, @NotNull(message = "Pessoa jurídica deve possuir cnpj") String cnpj) {
+			this.codPessoa = codPessoa;
 			this.cnpj = cnpj;
 		}
 

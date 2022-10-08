@@ -31,7 +31,7 @@ public class Fisica implements Serializable{
 	 
 	@Id //PK e FK
 	@Column(name = "cod_pessoa")
-	private long cod_pessoa;
+	private long codPessoa;
 	
 	@OneToOne
 	@JoinColumn(name = "cod_pessoa", insertable = false, updatable = false) //junta à tabela acima
@@ -53,14 +53,14 @@ public class Fisica implements Serializable{
 	}
 
 
-	public Fisica(long cod_pessoa, @NotNull(message = "Pessoa física deve possuir cpf") String cpf) {
-		this.cod_pessoa = cod_pessoa;
+	public Fisica(long codPessoa, @NotNull(message = "Pessoa física deve possuir cpf") String cpf) {
+		this.codPessoa = codPessoa;
 		this.cpf = cpf;
 	}
 
 
-	public Fisica(long cod_pessoa, Pessoa pessoa, @NotNull(message = "Pessoa física deve possuir cpf") String cpf) {
-		this.cod_pessoa = cod_pessoa;
+	public Fisica(long codPessoa, Pessoa pessoa, @NotNull(message = "Pessoa física deve possuir cpf") String cpf) {
+		this.codPessoa = codPessoa;
 		this.pessoa = pessoa;
 		this.cpf = cpf;
 	}
@@ -76,8 +76,8 @@ public class Fisica implements Serializable{
 	}
 
 
-	public void setCod_pessoa(long cod_pessoa) {
-		this.cod_pessoa = cod_pessoa;
+	public void setCodPessoa(long codPessoa) {
+		this.codPessoa = codPessoa;
 	}
 
 
@@ -90,8 +90,8 @@ public class Fisica implements Serializable{
 		this.cpf = cpf;
 	}
 
-	public long getCod_pessoa() {
-		return cod_pessoa;
+	public long getCodPessoa() {
+		return codPessoa;
 	}
 	
 }

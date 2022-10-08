@@ -6,13 +6,13 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class FisicaId implements Serializable{
 
-	private long cod_pessoa;
+	private long codPessoa;
 	private long id;
 	
 	public FisicaId(){}
 	
-	public FisicaId(long cod_pessoa, long id) {
-		this.cod_pessoa = cod_pessoa;
+	public FisicaId(long codPessoa, long id) {
+		this.codPessoa = codPessoa;
 		this.id = id;
 	}
 
@@ -26,12 +26,12 @@ public class FisicaId implements Serializable{
 	}
 
 
-	public long getCod_pessoa() {
-		return cod_pessoa;
+	public long getCodPessoa() {
+		return codPessoa;
 	}
 	
-	public void setCod_pessoa(long cod_pessoa) {
-		this.cod_pessoa = cod_pessoa;
+	public void setCodPessoa(long codPessoa) {
+		this.codPessoa = codPessoa;
 	}
 	
 

@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.oficina.model.Fisica;
+import com.projeto.oficina.model.Juridica;
 import com.projeto.oficina.model.Pessoa;
 import com.projeto.oficina.model.Veiculo;
 import com.projeto.oficina.repository.FisicaRepo;
@@ -110,4 +112,64 @@ public class FisicaController {
 		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		        }
 		    }
+			
+			
+			@Operation(summary = "Busca pf por pessoa", description = "Retorna um JSON")
+			@GetMapping(path="/fisica/pessoa/{codPessoa}") //ENDEREÇO DE REQUISIÇÃO GET
+			public ResponseEntity<Fisica> getFisicaByPessoa(@Parameter(description = "codPessoa") @PathVariable("codPessoa") long codPessoa) 
+			{
+				//PROCURA NO BANCO NA TABELA 
+		        Optional<Fisica> fisica = frepo.findByCodPessoa(codPessoa);
+		 
+		        if (fisica.isPresent()) {
+		            return new ResponseEntity<>(fisica.get(), HttpStatus.OK); //RETORNA OBJETO
+		        } else {
+		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		        }
+		    }
+			
+			@Operation(summary = "Atualiza cpf", description = "Retorna um JSON")
+			@PutMapping(path="/fisica/pessoa/{codPessoa}") //ENDEREÇO DE REQUISIÇÃO GET
+			public ResponseEntity<Fisica> updateFisicaByPessoa(@Parameter(description = "codPessoa") @PathVariable("codPessoa") long codPessoa, @Parameter(description = "Novo cpf") @RequestParam(required = true) String cpf) 
+			{
+				//PROCURA NO BANCO NA TABELA 
+		        Optional<Fisica> fisica = frepo.findByCodPessoa(codPessoa);
+		 
+		        if (fisica.isPresent()) {
+		        	Fisica _fisica = fisica.get();
+		        	_fisica.setCpf(cpf);
+		        	
+		            return new ResponseEntity<>(frepo.save(_fisica), HttpStatus.OK); //RETORNA OBJETO
+		        } else {
+		        	try {
+						//CRIA OBJETO PESSOA COM A JSON E SALVA NO BANCO
+			            Fisica _fisica = frepo.save( new Fisica(codPessoa, cpf) );
+			            //RETORNA MENSAGEM DE SUCESSO
+			            return new ResponseEntity<>(_fisica, HttpStatus.CREATED);
+			        } catch (Exception e) {
+			        	System.out.println(e);
+			            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			        }
+		        }
+		    }
+			
+			
+			@Transactional
+			@Operation(summary = "Deleta uma pessoa Fisica pela pessoa", description = "Recebe uma pessoa e deleta pf")
+			@DeleteMapping(path = "/fisicas/pessoa/{codPessoa}")
+			public ResponseEntity<HttpStatus> deleteFisicaBypessoa(@Parameter(description = "codPessoa") @PathVariable("codPessoa") long codPessoa){
+				Optional<Fisica> _fisica = frepo.findByCodPessoa(codPessoa);
+				if(_fisica.isPresent()) {
+					try {
+						frepo.deleteByCodPessoa(codPessoa);
+				        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				        } catch (Exception e) {
+				        	//System.out.println(e);
+				            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				        }
+					
+				}else {
+					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				}
+			}
 }
