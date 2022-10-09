@@ -22,13 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projeto.oficina.model.Cliente;
-import com.projeto.oficina.model.Fisica;
+import com.projeto.oficina.model.Funcionario;
 import com.projeto.oficina.model.Juridica;
 import com.projeto.oficina.model.Pessoa;
-import com.projeto.oficina.repository.ClienteRepo;
-import com.projeto.oficina.repository.FisicaRepo;
-import com.projeto.oficina.repository.JuridicaRepo;
+
+import com.projeto.oficina.repository.FuncionarioRepo;
 import com.projeto.oficina.repository.PessoaRepo;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,36 +36,31 @@ import io.swagger.v3.oas.annotations.Parameter;
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api")
-public class ClienteController {
+public class FuncionarioController {
 	//VARIÁVEL DE ACESSO AO BANCO DE DADOS
 			@Autowired
-		    ClienteRepo crepo;
+		    FuncionarioRepo frepo;
 			
 			@Autowired
 			PessoaRepo prepo;
 			
-			@Autowired
-			FisicaRepo frepo;
-			
-			@Autowired
-			JuridicaRepo jrepo;
 			
 			//OPERAÇÕES
 			/*
-			 * ENCONTRA CLIENTE POR COD PESSOA
+			 * ENCONTRA FUNCIONARIO POR COD PESSOA
 			 * */
-			@Operation(summary = "Busca cliente(cod_pessoa)", description = "Retorna um JSON Cliente")
-			@GetMapping(path="/clientes/pessoa/{cod_pessoa}") //ENDEREÇO DE REQUISIÇÃO GET
-			public ResponseEntity<Cliente> getClienteByCod_Pessoa(@Parameter(description = "Código da pessoa buscada") @PathVariable("cod_pessoa") long cod_pessoa)  
+			@Operation(summary = "Busca funcionario(cod_pessoa)", description = "Retorna um JSON func")
+			@GetMapping(path="/funcionario/pessoa/{cod_pessoa}") //ENDEREÇO DE REQUISIÇÃO GET
+			public ResponseEntity<Funcionario> getFuncionarioByCod_Pessoa(@Parameter(description = "Código da pessoa buscada") @PathVariable("cod_pessoa") long cod_pessoa)  
 			{
 				//PROCURA NO BANCO NA TABELA PESSOA
 		        Optional<Pessoa> pessoa = prepo.findById(cod_pessoa);
 		 
 		        if (pessoa.isPresent()) {
 		        	//PROCURA CLIENTE VINCULADO Á PESSOA
-		        	Optional<Cliente> cliente = crepo.findByPessoa(pessoa.get());
-		        	if (cliente.isPresent()) {
-			            return new ResponseEntity<>(cliente.get(), HttpStatus.OK); 
+		        	Optional<Funcionario> funcionario = frepo.findByPessoa(pessoa.get());
+		        	if (funcionario.isPresent()) {
+			            return new ResponseEntity<>(funcionario.get(), HttpStatus.OK); 
 			        } else {
 			            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			        }
@@ -77,36 +70,36 @@ public class ClienteController {
 		    }
 			
 			/*
-			 * ENCONTRA UMA CLIENTE/LISTA DE CLIENTES NO BANCO PELO SEU NOME 
+			 * ENCONTRA FUNCIONARIO POR NOME
 			 * */
-			@Operation(summary = "Busca uma/várias Cliente/s(por nomes que ela contém)", description = "Retorna uma Cliente cujo nome é especificado, se nenhum for especificado, retorna uma lista de clientes")
-			@GetMapping(path="/clientes") //ENDEREÇO DE BUSCA GET
-		    public ResponseEntity<Map<String, Object>> getAllClientes(@Parameter(description = "Nome da cliente que está sendo buscada") @RequestParam(required = false) String nome, @RequestParam(defaultValue = "0") int page,
+			@Operation(summary = "Busca uma/várias Funcionario/s(por nomes que ela contém)", description = "Retorna uma Funcionario cujo nome é especificado, se nenhum for especificado, retorna uma lista de func")
+			@GetMapping(path="/funcionarios") //ENDEREÇO DE BUSCA GET
+		    public ResponseEntity<Map<String, Object>> getAllFuncionarios(@Parameter(description = "Nome do func que está sendo buscada") @RequestParam(required = false) String nome, @RequestParam(defaultValue = "0") int page,
 		            @RequestParam(defaultValue = "3") int size) 
 			{
 		        try {
 		        	//CRIA A LISTA
-		            List<Cliente> clientesList = new ArrayList<Cliente>();
+		            List<Funcionario> funcionariosList = new ArrayList<Funcionario>();
 		            Pageable paging = PageRequest.of(page, size);
-		            Page<Cliente> paginaClientes;
+		            Page<Funcionario> paginaFuncionarios;
 		            
 		            //SE NENHUM NOME FOI ESPECIFICADO
 		            if (nome == null) {
-		            	paginaClientes = crepo.findAll(paging);
+		            	paginaFuncionarios = frepo.findAll(paging);
 		            } else { //SE HÁ NOME
-		            	paginaClientes = crepo.findAllByPessoaNomeContaining(nome, paging);
+		            	paginaFuncionarios = frepo.findAllByPessoaNomeContaining(nome, paging);
 		            }
 		 
-		            clientesList = paginaClientes.getContent();
+		            funcionariosList = paginaFuncionarios.getContent();
 		            
 		            Map<String, Object> response = new HashMap<>();
-		            response.put("clientes", clientesList);
-		            response.put("currentPage", paginaClientes.getNumber());
-		            response.put("totalItems", paginaClientes.getTotalElements());
-		            response.put("totalPages", paginaClientes.getTotalPages());
+		            response.put("funcionarios", funcionariosList);
+		            response.put("currentPage", paginaFuncionarios.getNumber());
+		            response.put("totalItems", paginaFuncionarios.getTotalElements());
+		            response.put("totalPages", paginaFuncionarios.getTotalPages());
 		            
 		            //SE NÃO HOUVEREM PESSOAS COM O NOME ESPECIFICADO
-		            if (clientesList.isEmpty()) {
+		            if (funcionariosList.isEmpty()) {
 		                return new ResponseEntity<>(HttpStatus.NO_CONTENT); //LISTA VAZIA
 		            }
 		            //RETORNA A LISTA DE CLIENTES
@@ -119,16 +112,16 @@ public class ClienteController {
 		    }
 			
 			/*
-			 * ENCONTRA CLIENTE POR COD_CLIENTE
+			 * ENCONTRA FUNCIONARIO PELO SEU CODIGO
 			 * */
 			@Operation(summary = "Busca cliente(cod_cliente)", description = "Retorna um JSON Cliente")
-			@GetMapping(path="/clientes/{cod_cliente}") //ENDEREÇO DE REQUISIÇÃO GET
-			public ResponseEntity<Cliente> getClienteByCod_Cliente(@Parameter(description = "Código da cliente buscada") @PathVariable("cod_cliente") long cod_cliente)  
+			@GetMapping(path="/funcionario/{cod_funcionario}") //ENDEREÇO DE REQUISIÇÃO GET
+			public ResponseEntity<Funcionario> getFuncionarioByCod_Funcionario(@Parameter(description = "Código da func buscada") @PathVariable("cod_funcionario") long cod_funcionario)  
 			{
 				//PROCURA NO BANCO 
-		        Optional<Cliente> cliente = crepo.findById(cod_cliente);
-		        if (cliente.isPresent()) {
-		            return new ResponseEntity<>(cliente.get(), HttpStatus.OK); 
+		        Optional<Funcionario> funcionario = frepo.findById(cod_funcionario);
+		        if (funcionario.isPresent()) {
+		            return new ResponseEntity<>(funcionario.get(), HttpStatus.OK); 
 		        } else {
 		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		        }
@@ -137,31 +130,31 @@ public class ClienteController {
 			
 			
 			/*
-			 * CRIA CLIENTE
+			 * CRIA FUNCIONARIO
 			 * */
-			@Operation(summary = "Cria nova cliente", description = "Cria uma nova Cliente")
-			@PostMapping(path="/clientes") //ENDEREÇO DE REQUISIÇÃO POST
-		    public ResponseEntity<Cliente> createCliente(@RequestBody Cliente novoCliente) 
+			@Operation(summary = "Cria nova func", description = "Cria uma nova funcionario")
+			@PostMapping(path="/funcionario") //ENDEREÇO DE REQUISIÇÃO POST
+		    public ResponseEntity<Funcionario> createCliente(@RequestBody Funcionario novoFuncionario) 
 			{	
 				try {
-		            Cliente _cliente = crepo.save( new Cliente(novoCliente.getPessoa()));
+		            Funcionario _funcionario = frepo.save( new Funcionario(novoFuncionario.getPessoa()));
 		            //RETORNA MENSAGEM DE SUCESSO
-		            return new ResponseEntity<>(_cliente, HttpStatus.CREATED);
+		            return new ResponseEntity<>(_funcionario, HttpStatus.CREATED);
 		        } catch (Exception e) {
 		            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		        }
 		    }
 			
 			
-			@Operation(summary = "Deleta Cliente", description = "Deleta Cliente por cod_cliente")
-			 @DeleteMapping(path="/clientes/{cod_cliente}")//ENDEREÇO REQUISIÇÃO DELETE
-			    public ResponseEntity<HttpStatus> deleteCliente(@Parameter(description = "Cod_cliente") @PathVariable("cod_cliente") long cod_cliente) {
-				Optional<Cliente> pessoadata = crepo.findById(cod_cliente);
+			@Operation(summary = "Deleta Funcionario", description = "Deleta Funcionairo por cod_funcionario")
+			 @DeleteMapping(path="/funcionario/{cod_funcionario}")//ENDEREÇO REQUISIÇÃO DELETE
+			    public ResponseEntity<HttpStatus> deleteFuncionario(@Parameter(description = "cod_funcionario") @PathVariable("cod_funcionario") long cod_funcionario) {
+				Optional<Funcionario> funcionariodata = frepo.findById(cod_funcionario);
 				//SE EXISTIR, DELETA
-				if(pessoadata.isPresent())
+				if(funcionariodata.isPresent())
 				{
 				try {
-			        crepo.deleteById(cod_cliente);
+			        frepo.deleteById(cod_funcionario);
 			        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			        } catch (Exception e) {
 			            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
