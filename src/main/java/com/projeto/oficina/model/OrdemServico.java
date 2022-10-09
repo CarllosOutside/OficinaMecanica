@@ -43,7 +43,7 @@ public class OrdemServico implements Serializable{
 		@JoinColumn(name = "placa", insertable = false, updatable = false) //junta à tabela acima
 		private Veiculo veiculo; // é preciso haver uma pessoa
 		
-		@JsonFormat(pattern = "dd/MM/yyyy")
+		@JsonFormat(pattern = "yyyy-MM-dd")
 		private Date dataAbertura;
 		
 		private float valorTotalServicos;
