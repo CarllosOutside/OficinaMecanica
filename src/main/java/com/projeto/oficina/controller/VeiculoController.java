@@ -148,8 +148,13 @@ public class VeiculoController {
             Page<Veiculo> paginaVeiculos;
   
             //Busca pagina no banco
-            paginaVeiculos = vrepo.findAllByCodCliente(codCliente, paging);
-
+            
+            if (placa == null) {
+            	paginaVeiculos = vrepo.findAllByCodCliente(codCliente, paging);
+            } else { //SE HÁ NOME
+            	paginaVeiculos = vrepo.findByCodClienteAndPlaca(codCliente, placa,paging);
+            }
+            
             //extrai conteudo da pagina
             veiculosList = paginaVeiculos.getContent();
             

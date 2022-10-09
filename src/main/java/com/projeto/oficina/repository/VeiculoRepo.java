@@ -14,4 +14,5 @@ import com.projeto.oficina.model.Veiculo;
 public interface VeiculoRepo extends JpaRepository<Veiculo, String> {
 	List<Veiculo> findByMarcaContaining(String marca);
 	Page<Veiculo> findAllByCodCliente(long codCliente, Pageable pageable);
+	Page<Veiculo> findByCodClienteAndPlaca(long codCliente, String placa, Pageable pageable);
 }
