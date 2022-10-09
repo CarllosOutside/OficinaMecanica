@@ -65,7 +65,7 @@ public class OrdemController {
 			 * */
 			@Operation(summary = "Busca uma/várias Ordens/s(por placa)", description = "Retorna uma Ordem cujo placa é especificado")
 			@GetMapping(path="/ordens/veiculo/{placa}") //ENDEREÇO DE BUSCA GET
-		    public ResponseEntity<Map<String, Object>> getAllVeiculoOrdens(@Parameter(description = "placa") @RequestParam(required = true) String placa, @RequestParam(defaultValue = "0") int page,
+		    public ResponseEntity<Map<String, Object>> getAllVeiculoOrdens(@Parameter(description = "placa")  @PathVariable("placa") String placa, @RequestParam(defaultValue = "0") int page,
 		            @RequestParam(defaultValue = "3") int size) 
 			{
 		        try {
@@ -103,7 +103,7 @@ public class OrdemController {
 			 * */
 			@Operation(summary = "Busca uma/várias Ordens/s(por func)", description = "Retorna uma Ordem cujo func é especificado")
 			@GetMapping(path="/ordens/funcionario/{codFuncionario}") //ENDEREÇO DE BUSCA GET
-		    public ResponseEntity<Map<String, Object>> getAllFuncionarioOrdens(@Parameter(description = "codFuncionario") @RequestParam(required = true) long codFuncionario, @RequestParam(defaultValue = "0") int page,
+		    public ResponseEntity<Map<String, Object>> getAllFuncionarioOrdens(@Parameter(description = "codFuncionario")  @PathVariable("codFuncionario") long codFuncionario, @RequestParam(defaultValue = "0") int page,
 		            @RequestParam(defaultValue = "3") int size) 
 			{
 		        try {
