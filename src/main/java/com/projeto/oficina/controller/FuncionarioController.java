@@ -163,4 +163,29 @@ public class FuncionarioController {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}
 			    }
+			
+			
+			
+			/*
+			 * LISTA COM FUNCIONARIOS
+			 * */
+			@Operation(summary = "Busca uma/várias Funcionario/s", description = " retorna uma lista de func")
+			@GetMapping(path="/funcionarios/lista") //ENDEREÇO DE BUSCA GET
+		    public ResponseEntity<List<Funcionario>> getAllFuncionarioList() 
+			{
+		        try {
+		        	//CRIA A LISTA
+		            List<Funcionario> funcionariosList = frepo.findAll();
+		            //SE NÃO HOUVEREM PESSOAS COM O NOME ESPECIFICADO
+		            if (funcionariosList.isEmpty()) {
+		                return new ResponseEntity<>(HttpStatus.NO_CONTENT); //LISTA VAZIA
+		            }
+		            //RETORNA A LISTA DE CLIENTES
+		            return new ResponseEntity<>(funcionariosList, HttpStatus.OK);
+		 
+		 
+		        } catch (Exception e) {
+		            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		        }
+		    }
 }
