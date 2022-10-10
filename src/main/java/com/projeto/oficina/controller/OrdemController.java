@@ -1,5 +1,7 @@
 package com.projeto.oficina.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -143,13 +145,14 @@ public class OrdemController {
 			@Operation(summary = "Cria nova ordem", description = "Cria uma nova ordem com os dados da Json recebida no caminho")
 			@PostMapping(path="/ordens/{codFuncionario}/{placa}") //ENDEREÇO DE REQUISIÇÃO POST
 		    public ResponseEntity<OrdemServico> createPessoa(@Parameter(description = "Código do funcionario") @PathVariable("codFuncionario") long codFuncionario, 
-		    		@Parameter(description = "Placa do veiculo") @PathVariable("placa") String placa) 
+		    		@Parameter(description = "Placa do veiculo") @PathVariable("placa") String placa,
+		    		@Parameter(description = "Data de abertura") @RequestParam(required = true) String dataAbertura) 
 			{	
 				try {
-					//DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-					Date date = new Date();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = dateFormat.parse(dataAbertura);
 		//CRIA OBJETO ORDEM COM A JSON E SALVA NO BANCO
-					OrdemServico _ordem = ordemrepo.save( new OrdemServico(codFuncionario, placa,date) );
+					OrdemServico _ordem = ordemrepo.save( new OrdemServico(codFuncionario, placa,date, date) );
 		            //RETORNA MENSAGEM DE SUCESSO
 		            return new ResponseEntity<>(_ordem, HttpStatus.CREATED);
 		        } catch (Exception e) {

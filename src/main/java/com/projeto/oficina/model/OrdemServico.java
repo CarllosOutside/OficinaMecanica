@@ -43,12 +43,15 @@ public class OrdemServico implements Serializable{
 		@JoinColumn(name = "placa", insertable = false, updatable = false) //junta à tabela acima
 		private Veiculo veiculo; // é preciso haver uma pessoa
 		
-		@JsonFormat(pattern = "yyyy-MM-dd")
+		@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT-3")
 		private Date dataAbertura;
 		
 		private float valorTotalServicos;
 		
 		private float valorTotalPecas;
+		
+		@JsonFormat(pattern = "EEE", timezone="GMT-3")
+		private Date diaSemana;
 
 		public long getCodFuncionario() {
 			return codFuncionario;
@@ -56,6 +59,14 @@ public class OrdemServico implements Serializable{
 
 		public void setCodFuncionario(long codFuncionario) {
 			this.codFuncionario = codFuncionario;
+		}
+
+		public Date getDiaSemana() {
+			return diaSemana;
+		}
+
+		public void setDiaSemana(Date diaSemana) {
+			this.diaSemana = diaSemana;
 		}
 
 		public Funcionario getFuncionario() {
@@ -119,6 +130,16 @@ public class OrdemServico implements Serializable{
 			this.placa = placa;
 			this.dataAbertura = dataAbertura;
 		}
+
+		public OrdemServico(long codFuncionario, String placa, Date dataAbertura, Date diaSemana) {
+			super();
+			this.codFuncionario = codFuncionario;
+			this.placa = placa;
+			this.dataAbertura = dataAbertura;
+			this.diaSemana = diaSemana;
+		}
+		
+		
 		
 		
 		
