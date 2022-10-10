@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -43,6 +46,7 @@ public class OrdemServico implements Serializable{
 		@JoinColumn(name = "placa", insertable = false, updatable = false) //junta à tabela acima
 		private Veiculo veiculo; // é preciso haver uma pessoa
 		
+		@Temporal(TemporalType.DATE)
 		@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT-3")
 		private Date dataAbertura;
 		

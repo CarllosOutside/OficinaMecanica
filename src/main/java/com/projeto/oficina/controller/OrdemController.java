@@ -3,6 +3,7 @@ package com.projeto.oficina.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -127,7 +128,7 @@ public class OrdemController {
 		            //SE NÃO HOUVEREM PESSOAS COM O NOME ESPECIFICADO
 		            if (ordensList.isEmpty()) {
 		                return new ResponseEntity<>(HttpStatus.NO_CONTENT); //LISTA VAZIA
-		            }
+		            } System.out.println(ordensList);
 		            //RETORNA A LISTA DE PESSOAS
 		            return new ResponseEntity<>(response, HttpStatus.OK);
 		 
@@ -180,4 +181,49 @@ public class OrdemController {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}
 			    }
+			
+			
+			
+			
+			/*
+			 * ENCONTRA UMA ORDEM POR MES E ANO
+			 * */
+			@SuppressWarnings("deprecation")
+			@Operation(summary = "Busca ordens(data)", description = "Retorna  JSONs ordens com seu mes especificado")
+			@GetMapping(path="/ordens/{ano}/{mes}") //ENDEREÇO DE REQUISIÇÃO GET
+			public ResponseEntity<List<OrdemServico>> getOrdensByMes(@Parameter(description = "Mes") @PathVariable("mes") int mes,
+					@Parameter(description = "ano") @PathVariable("ano") int ano) //COD_PESSOA É UMA PATHVARIABLE 
+			{
+			try{
+				List<OrdemServico> ordensList = new ArrayList<OrdemServico>();
+				
+				Calendar lastDayOfPastMonth= Calendar.getInstance(); //ultimo dia do mes passado
+				if(mes>1) //se nao for janeiro
+					lastDayOfPastMonth.set(ano, mes-1, 0);
+				else
+					lastDayOfPastMonth.set(ano-1, 12, 0);//se for janeiro, pega o ultimo dia de dezembro do ano passado
+				
+				Calendar firstDayOfNextMonth = Calendar.getInstance();
+				if(mes<12)
+					firstDayOfNextMonth.set(ano,mes,1);
+				else
+					firstDayOfNextMonth.set(ano+1,1,1);
+				
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				
+				ordemrepo.findAllByDataAberturaBetween(df.parse(df.format(lastDayOfPastMonth.getTime()).toString()),
+						df.parse(df.format(firstDayOfNextMonth.getTime()).toString())).
+				forEach(ordensList::add);
+				
+		        if (!ordensList.isEmpty()) {
+		            return new ResponseEntity<>(ordensList, HttpStatus.OK); //RETORNA OBJETO PESSOA + MENSAGEM DE SUCESSO
+		        } else {
+		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		        }
+			}
+		        catch(Exception e) {
+		        	System.out.println(e);
+		        	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		        }
+		    }
 }

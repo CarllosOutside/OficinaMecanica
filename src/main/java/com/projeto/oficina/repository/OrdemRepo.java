@@ -1,5 +1,6 @@
 package com.projeto.oficina.repository;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -18,5 +19,7 @@ Page<OrdemServico> findByPlaca(String placa, Pageable page);
 Page<OrdemServico> findByCodFuncionario(long codFuncionario, Pageable page);
 Optional<OrdemServico> findById(long id);
 void deleteById(long id);
+List<OrdemServico> findAllByDataAberturaBetween(Date start,Date end);
+OrdemServico findByDataAbertura(Date start);
 
 }
