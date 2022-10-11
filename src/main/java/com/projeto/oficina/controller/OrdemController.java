@@ -23,11 +23,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.oficina.model.OrdemServico;
+import com.projeto.oficina.model.Pessoa;
 import com.projeto.oficina.repository.OrdemRepo;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -225,5 +228,31 @@ public class OrdemController {
 		        	System.out.println(e);
 		        	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		        }
+		    }
+			
+			
+			/*
+			 * ATUALIZA ORDEM
+			 * */
+			@Operation(summary = "Atualiza Ordem", description = "Atualiza informações de uma ordem")
+			@PutMapping(path="/ordens/{id}") //ENDEREÇO REQUISIÇÃO PUT
+		    public ResponseEntity<OrdemServico> updateOrdem(@Parameter(description = "Cod da ordem") @PathVariable("id") long id, @RequestBody OrdemServico ordemNova)
+			{
+				try {
+		        Optional<OrdemServico> ordemAntiga = ordemrepo.findById(id);
+		
+		        if (ordemAntiga.isPresent()) {
+		            OrdemServico _ordem = ordemAntiga.get(); 
+		            //ALTERA OS DADOS
+		            _ordem.setCodFuncionario(ordemNova.getCodFuncionario());
+		            _ordem.setDataAbertura(ordemNova.getDataAbertura());
+		            _ordem.setPlaca(ordemNova.getPlaca());
+		            _ordem.setValorTotalPecas(ordemNova.getValorTotalPecas());
+		            _ordem.setValorTotalServicos(ordemNova.getValorTotalServicos());
+		            //SOBRESCREVE
+		            return new ResponseEntity<>(ordemrepo.save(_ordem), HttpStatus.OK); //RETORNA MENSAGEM DE SUCESSO
+		        } else {
+		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		        }}catch(Exception e) {System.out.println(e); return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);}
 		    }
 }

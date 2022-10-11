@@ -16,12 +16,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "ordem")
-@IdClass(OrdemServicoId.class)
+//@IdClass(OrdemServicoId.class)
 public class OrdemServico implements Serializable{
 	 private static final long serialVersionUID = -909206262878526790L; 
 
@@ -29,7 +28,7 @@ public class OrdemServico implements Serializable{
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private long id; 
 	 
-	 	@Id //PK e FK
+	 	//@Id //PK e FK
 		@Column(name = "cod_funcionario")
 		private long codFuncionario;
 		
@@ -38,7 +37,7 @@ public class OrdemServico implements Serializable{
 		private Funcionario funcionario; // é preciso haver uma pessoa
 		
 		
-		@Id //PK e FK
+		//@Id //PK e FK
 		@Column(name = "placa")
 		private String placa;
 		
