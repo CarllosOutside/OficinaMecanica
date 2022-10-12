@@ -102,12 +102,14 @@ public class VeiculoController {
 		//BUSCA NA TABELA FIPE USANDO WEBSCRAPER
 		Veiculo veiculo = scraperService.getVehicleByPlaca(placa);
 		veiculo.setCodCliente(cod_cliente);
+		//System.out.println("codCli: "+veiculo.getCodCliente() + "   placa: "+veiculo.getPlaca());
 		try {
 			//SALVA NO BANCO
             vrepo.save(veiculo);
             //RETORNA MENSAGEM DE SUCESSO
             return new ResponseEntity<>(veiculo, HttpStatus.CREATED);
         } catch (Exception e) {
+        	System.out.println(e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

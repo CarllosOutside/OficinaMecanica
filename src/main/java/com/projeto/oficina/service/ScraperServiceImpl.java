@@ -51,7 +51,7 @@ public class ScraperServiceImpl implements ScraperService {
             	String campo = linhas.child(0).text();
             	//pega o td contendo o dado
             	String dado = linhas.child(1).text();
-            	System.out.println("Campo: "+campo);
+            	System.out.println("Campo: "+campo+" "+dado);
                 if (StringUtils.isNotEmpty(campo) && StringUtils.isNotEmpty(dado)) {
                    //mapping data to our model class
                     if(campo.contains("Marca")) {
@@ -68,9 +68,11 @@ public class ScraperServiceImpl implements ScraperService {
                     }
                 }
             }
-        } catch (IOException ex) {
-        	System.out.println("erro: "+ex);
-            ex.printStackTrace();
+        } catch (Exception ex) {
+        	//System.out.println("erro: "+ex);
+           // ex.printStackTrace();
+           // System.out.println(veiculo.getPlaca());
+            return;
         }
     }
 
