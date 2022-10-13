@@ -43,11 +43,12 @@ public class ServicoController {
 	 * CRIA Servico
 	 * */
 	@Operation(summary = "Cria um novo servico", description = "cria um servico para ordem de servico especificada")
-	@PostMapping(path="/servicos") //ENDEREÇO DE REQUISIÇÃO POST
-    public ResponseEntity<Servico> createServico(@RequestBody Servico novoServico) 
+	@PostMapping(path="/servicos/{codOrdem}") //ENDEREÇO DE REQUISIÇÃO POST
+    public ResponseEntity<Servico> createServico(@RequestBody Servico novoServico,
+    		@Parameter(description = "Código da ordem") @PathVariable("codOrdem") long codOrdem) 
 	{	
 		try {
-            Servico _servico = srepo.save( new Servico(novoServico.getCodOrdem(), novoServico.getValorPecas(), 
+            Servico _servico = srepo.save( new Servico(codOrdem, novoServico.getValorPecas(), 
             		novoServico.getValorServico(), novoServico.getDescricao()));
             //RETORNA MENSAGEM DE SUCESSO
             return new ResponseEntity<>(_servico, HttpStatus.CREATED);
