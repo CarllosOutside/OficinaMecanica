@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -135,5 +136,58 @@ public class ServicoController {
 				} else {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}
-			    }
+			    }		
+			
+			
+			/*
+			 * ATUALIZA Servico
+			 * */
+			@Operation(summary = "Atualiza Servico", description = "Atualiza informações de um servico")
+			@PutMapping(path="/servicos/{id}") //ENDEREÇO REQUISIÇÃO PUT
+		    public ResponseEntity<Servico> updateServico(@Parameter(description = "Cod do serviço") @PathVariable("id") long id, 
+		    		@RequestBody Servico servicoNovo)
+			{
+				try {
+		        Optional<Servico> servicoAntigo = srepo.findById(id);
+		
+		        if (servicoAntigo.isPresent()) {
+		            Servico _servico = servicoAntigo.get(); 
+		            //ALTERA OS DADOS
+		            _servico.setDescricao(servicoNovo.getDescricao());
+		            _servico.setValorPecas(servicoNovo.getValorPecas());
+		            _servico.setValorServico(servicoNovo.getValorServico());
+		            //SOBRESCREVE
+		            return new ResponseEntity<>(srepo.save(_servico), HttpStatus.OK); //RETORNA MENSAGEM DE SUCESSO
+		        } else {
+		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		        }}catch(Exception e) {System.out.println(e); return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);}
+		    }
+			
+			
+			/*
+			 * ENCONTRA TODOS SERVICOS DE UMA ORDEM E CALCULA VALOR TOTAL EM SERVICOS E PECAS
+			 * */
+			@Operation(summary = "Busca servicos da uma ordem", description = "Retorna valores")
+			@GetMapping(path="/ordem/{codOrdem}/valores") //ENDEREÇO DE REQUISIÇÃO GET
+			public ResponseEntity<Map<String, Object>> getOrdemValores(@Parameter(description = "Código da ordem") @PathVariable("codOrdem") long codOrdem) 
+			{
+		        List<Servico> servicosList = new ArrayList<Servico>();
+		        
+		        srepo.findAllByCodOrdem(codOrdem).forEach(servicosList::add);
+		        float valorTMaoObra = 0;
+		        float valorTPecas = 0;
+		   
+		        for(Servico servico : servicosList) {
+		        	valorTMaoObra += servico.getValorServico();
+		        	valorTPecas += servico.getValorPecas();
+		        }
+		        
+		        Map<String, Object> response = new HashMap<>();
+		        response.put("valorTServicos", valorTMaoObra);
+		        response.put("valorTPecas", valorTPecas);
+		        
+
+		        return new ResponseEntity<>(response, HttpStatus.OK); 
+
+		    }
 }
