@@ -249,6 +249,8 @@ public class OrdemController {
 		            _ordem.setPlaca(ordemNova.getPlaca());
 		            _ordem.setValorTotalPecas(ordemNova.getValorTotalPecas());
 		            _ordem.setValorTotalServicos(ordemNova.getValorTotalServicos());
+		            _ordem.setAberto(ordemNova.isAberto());
+		            _ordem.setDevolvido(ordemNova.isDevolvido());
 		            //SOBRESCREVE
 		            return new ResponseEntity<>(ordemrepo.save(_ordem), HttpStatus.OK); //RETORNA MENSAGEM DE SUCESSO
 		        } else {

@@ -55,6 +55,40 @@ public class OrdemServico implements Serializable{
 		
 		@JsonFormat(pattern = "EEE", timezone="GMT-3")
 		private Date diaSemana;
+		
+		@Column(columnDefinition="boolean default 'false'")
+		private boolean atrasado;
+		
+		private boolean aberto = true;
+		
+		@Column(columnDefinition="boolean default 'false'")
+		private boolean devolvido;
+		
+		
+
+		public boolean isDevolvido() {
+			return devolvido;
+		}
+
+		public void setDevolvido(boolean devolvido) {
+			this.devolvido = devolvido;
+		}
+
+		public boolean isAtrasado() {
+			return atrasado;
+		}
+
+		public void setAtrasado(boolean atrasado) {
+			this.atrasado = atrasado;
+		}
+
+		public boolean isAberto() {
+			return aberto;
+		}
+
+		public void setAberto(boolean aberto) {
+			this.aberto = aberto;
+		}
 
 		public long getCodFuncionario() {
 			return codFuncionario;
@@ -140,6 +174,32 @@ public class OrdemServico implements Serializable{
 			this.placa = placa;
 			this.dataAbertura = dataAbertura;
 			this.diaSemana = diaSemana;
+		}
+
+		public OrdemServico(long codFuncionario, String placa, Date dataAbertura, float valorTotalServicos,
+				float valorTotalPecas, boolean atrasado, boolean aberto) {
+			super();
+			this.codFuncionario = codFuncionario;
+			this.placa = placa;
+			this.dataAbertura = dataAbertura;
+			this.valorTotalServicos = valorTotalServicos;
+			this.valorTotalPecas = valorTotalPecas;
+			this.atrasado = atrasado;
+			this.aberto = aberto;
+		}
+
+		public OrdemServico(long codFuncionario, String placa, Date dataAbertura, float valorTotalServicos,
+				float valorTotalPecas, Date diaSemana, boolean atrasado, boolean aberto, boolean devolvido) {
+			super();
+			this.codFuncionario = codFuncionario;
+			this.placa = placa;
+			this.dataAbertura = dataAbertura;
+			this.valorTotalServicos = valorTotalServicos;
+			this.valorTotalPecas = valorTotalPecas;
+			this.diaSemana = diaSemana;
+			this.atrasado = atrasado;
+			this.aberto = aberto;
+			this.devolvido = devolvido;
 		}
 		
 		
