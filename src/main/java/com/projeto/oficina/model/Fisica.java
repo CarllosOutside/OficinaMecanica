@@ -38,7 +38,7 @@ public class Fisica implements Serializable{
 	private Pessoa pessoa; // é preciso haver uma pessoa
 	
 	
-	@Column
+	@Column(unique=true)
 	@Cpf
 	@NotNull(message = "Pessoa física deve possuir cpf")
 	String cpf;

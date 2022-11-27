@@ -35,7 +35,7 @@ public class Juridica implements Serializable{
 		private Pessoa pessoa; //TABELA PESSOA -> A CHAVE SECUNDARIA cod_pessoa FICA ARMAZENADA NA TABELA JURIDICA
 		//PARA EXISTIR PESSOA JURIDICA, DEVE EXISTIR PESSOA
 		
-		@Column
+		@Column(unique=true)
 		@Cnpj
 		@NotNull(message = "Pessoa jurídica deve possuir cnpj")
 		String cnpj;
