@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.oficina.model.Cliente;
 import com.projeto.oficina.model.Fisica;
+import com.projeto.oficina.model.Funcionario;
 import com.projeto.oficina.model.Juridica;
 import com.projeto.oficina.model.Pessoa;
 import com.projeto.oficina.repository.ClienteRepo;
@@ -170,4 +171,27 @@ public class ClienteController {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}
 			    }
+			
+			/*
+			 * LISTA COM CLIENTES
+			 * */
+			@Operation(summary = "Busca uma/várias Clientes/s", description = " retorna uma lista de cli")
+			@GetMapping(path="/clientes/lista") //ENDEREÇO DE BUSCA GET
+		    public ResponseEntity<List<Cliente>> getAllClientes() 
+			{
+		        try {
+		        	//CRIA A LISTA
+		            List<Cliente> clienteList = crepo.findAll();
+		            //SE NÃO HOUVEREM PESSOAS COM O NOME ESPECIFICADO
+		            if (clienteList.isEmpty()) {
+		                return new ResponseEntity<>(HttpStatus.NO_CONTENT); //LISTA VAZIA
+		            }
+		            //RETORNA A LISTA DE CLIENTES
+		            return new ResponseEntity<>(clienteList, HttpStatus.OK);
+		 
+		 
+		        } catch (Exception e) {
+		            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		        }
+		    }
 }
