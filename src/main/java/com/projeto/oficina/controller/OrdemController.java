@@ -31,7 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.oficina.model.OrdemServico;
 import com.projeto.oficina.model.Pessoa;
+import com.projeto.oficina.model.Veiculo;
 import com.projeto.oficina.repository.OrdemRepo;
+import com.projeto.oficina.repository.VeiculoRepo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,7 +47,9 @@ public class OrdemController {
 	//VARIÁVEL DE ACESSO AO BANCO DE DADOS
 			@Autowired
 		    OrdemRepo ordemrepo;
-
+			
+			@Autowired
+			VeiculoRepo veicrepo;
 			
 			//OPERAÇÕES
 			/*
@@ -153,10 +157,14 @@ public class OrdemController {
 		    		@Parameter(description = "Data de abertura") @RequestParam(required = true) String dataAbertura) 
 			{	
 				try {
+					Optional<Veiculo> veiculo = veicrepo.findById(placa);
+					if (!veiculo.isPresent()) {
+			           System.out.println("Veiculo nao achado");
+			        } 
 					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 					Date date = dateFormat.parse(dataAbertura);
 		//CRIA OBJETO ORDEM COM A JSON E SALVA NO BANCO
-					OrdemServico _ordem = ordemrepo.save( new OrdemServico(codFuncionario, placa,date, date) );
+					OrdemServico _ordem = ordemrepo.save( new OrdemServico(codFuncionario, placa,date, date, veiculo.get().getCodCliente()) );
 		            //RETORNA MENSAGEM DE SUCESSO
 		            return new ResponseEntity<>(_ordem, HttpStatus.CREATED);
 		        } catch (Exception e) {

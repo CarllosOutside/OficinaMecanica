@@ -64,6 +64,12 @@ public class OrdemServico implements Serializable{
 		@Column(columnDefinition="boolean default 'false'")
 		private boolean devolvido;
 		
+		@Column(name="cliente")
+		private long codCliente;
+		
+		@ManyToOne
+		@JoinColumn(name = "cliente", insertable = false, updatable = false) //junta à tabela acima
+		private Cliente cliente; // é preciso haver uma cliente ja cadastrado
 		
 
 		public boolean isDevolvido() {
@@ -97,6 +103,16 @@ public class OrdemServico implements Serializable{
 		public void setCodFuncionario(long codFuncionario) {
 			this.codFuncionario = codFuncionario;
 		}
+		
+
+		
+		public Cliente getCliente() {
+			return cliente;
+		}
+
+		public void setCliente(Cliente cliente) {
+			this.cliente = cliente;
+		}
 
 		public Date getDiaSemana() {
 			return diaSemana;
@@ -116,6 +132,15 @@ public class OrdemServico implements Serializable{
 
 		public String getPlaca() {
 			return placa;
+		}
+		
+
+		public long getCodCliente() {
+			return codCliente;
+		}
+
+		public void setCodCliente(long cod_cliente) {
+			this.codCliente = cod_cliente;
 		}
 
 		public void setPlaca(String placa) {
@@ -159,6 +184,15 @@ public class OrdemServico implements Serializable{
 		}
 		
 		public OrdemServico() {}
+		
+		public OrdemServico(long codFuncionario, String placa, Date dataAbertura, Date diaSemana, long cod_cliente) {
+			super();
+			this.codFuncionario = codFuncionario;
+			this.placa = placa;
+			this.dataAbertura = dataAbertura;
+			this.codCliente = cod_cliente;
+		}
+
 
 		//Apenas é necessario fornecer a placa do veiculo, a data de abertura da ordem e o funcionario responsavel
 		public OrdemServico(long codFuncionario, String placa, Date dataAbertura) {
