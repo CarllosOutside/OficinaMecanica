@@ -210,7 +210,7 @@ public class OrdemController {
 				
 				Calendar lastDayOfPastMonth= Calendar.getInstance(); //ultimo dia do mes passado
 				if(mes>1) //se nao for janeiro
-					lastDayOfPastMonth.set(ano, mes-1, 0);
+					lastDayOfPastMonth.set(ano, mes-1, 0); //0 é o ultimo dia do mes especificado
 				else
 					lastDayOfPastMonth.set(ano-1, 12, 0);//se for janeiro, pega o ultimo dia de dezembro do ano passado
 				
@@ -218,7 +218,7 @@ public class OrdemController {
 				if(mes<12)
 					firstDayOfNextMonth.set(ano,mes,1);
 				else
-					firstDayOfNextMonth.set(ano+1,1,1);
+					firstDayOfNextMonth.set(ano+1,0,1); //mês 0 = janeiro
 				
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				
