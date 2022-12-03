@@ -18,6 +18,7 @@ public interface OrdemRepo extends JpaRepository<OrdemServico, Long> {
 Page<OrdemServico> findByPlaca(String placa, Pageable page);
 Page<OrdemServico> findByCodFuncionario(Long codFuncionario, Pageable page);
 List<OrdemServico> findAllByDataAberturaBetween(Date start,Date end);
+List<OrdemServico> findAllByCodFuncionario(long codFuncionario);
 OrdemServico findByDataAbertura(Date start);
 
 }

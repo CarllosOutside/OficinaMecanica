@@ -69,6 +69,31 @@ public class OrdemController {
 		        }
 		    }
 			
+			/*
+			 * ENCONTRA TODAS ORDENS POR FUNCIONARIO
+			 * */
+			@Operation(summary = "Busca uma ordem(id)", description = "Retorna um JSON ordem com seu id especificado")
+			@GetMapping(path="/ordens/lista/f/{codFuncionario}") //ENDEREÇO DE REQUISIÇÃO GET
+			public ResponseEntity<List<OrdemServico>> getOrdemByf(@Parameter(description = "codFuncionario")  @PathVariable("codFuncionario") long codFuncionario)
+			{
+				try{
+					List<OrdemServico> ordensList = new ArrayList<OrdemServico>();
+
+					ordemrepo.findAllByCodFuncionario(codFuncionario).
+					forEach(ordensList::add);
+					
+			        if (!ordensList.isEmpty()) {
+			            return new ResponseEntity<>(ordensList, HttpStatus.OK); //RETORNA OBJETO PESSOA + MENSAGEM DE SUCESSO
+			        } else {
+			            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			        }
+				}
+			        catch(Exception e) {
+			        	System.out.println(e);
+			        	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			        }
+		    }
+			
 			
 			/*
 			 * ENCONTRA UMA ORDEM/LISTA DE ORDENS NO BANCO PELA PLACA DO VEICULO
