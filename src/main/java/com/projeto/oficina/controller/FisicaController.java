@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 //RECEBE E RETORNA REQUISICOES HTTP ATRAVES DO ENDEREÇO /API
-@CrossOrigin(origins = {"http://localhost:3000"})
+//@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api")
 public class FisicaController {
