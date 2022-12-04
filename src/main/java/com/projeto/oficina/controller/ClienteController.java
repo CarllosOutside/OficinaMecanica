@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.oficina.model.Cliente;
+import com.projeto.oficina.model.Estado;
 import com.projeto.oficina.model.Fisica;
 import com.projeto.oficina.model.Funcionario;
 import com.projeto.oficina.model.Juridica;
@@ -145,7 +146,7 @@ public class ClienteController {
 		    public ResponseEntity<Cliente> createCliente(@RequestBody Cliente novoCliente) 
 			{	
 				try {
-		            Cliente _cliente = crepo.save( new Cliente(novoCliente.getPessoa()));
+		            Cliente _cliente = crepo.save( new Cliente(novoCliente.getPessoa(),true));
 		            //RETORNA MENSAGEM DE SUCESSO
 		            return new ResponseEntity<>(_cliente, HttpStatus.CREATED);
 		        } catch (Exception e) {
@@ -153,20 +154,18 @@ public class ClienteController {
 		        }
 		    }
 			
-			
+			/*
+			 * OPERACAO DE "DELETE" ATIVA OU DESATIVA CLIENTE
+			 * */
 			@Operation(summary = "Deleta Cliente", description = "Deleta Cliente por cod_cliente")
 			 @DeleteMapping(path="/clientes/{cod_cliente}")//ENDEREÇO REQUISIÇÃO DELETE
-			    public ResponseEntity<HttpStatus> deleteCliente(@Parameter(description = "Cod_cliente") @PathVariable("cod_cliente") long cod_cliente) {
-				Optional<Cliente> pessoadata = crepo.findById(cod_cliente);
-				//SE EXISTIR, DELETA
-				if(pessoadata.isPresent())
+			    public ResponseEntity<Cliente> deleteCliente(@Parameter(description = "Cod_cliente") @PathVariable("cod_cliente") long cod_cliente) {
+				Optional<Cliente> clientedata = crepo.findById(cod_cliente);
+				if(clientedata.isPresent())
 				{
-				try {
-			        crepo.deleteById(cod_cliente);
-			        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			        } catch (Exception e) {
-			            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-			        }
+					Cliente _cliente = clientedata.get();
+					_cliente.setcAtivo(!_cliente.iscAtivo());
+					return new ResponseEntity<>(crepo.save(_cliente), HttpStatus.OK);
 				} else {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}

@@ -1,5 +1,6 @@
 package com.projeto.oficina.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,8 @@ public class Cliente {
     @JoinColumn(name = "cod_pessoa")
 	Pessoa pessoa;
 	
+	@Column(columnDefinition="boolean default 'true'")
+	private boolean cAtivo;
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -36,10 +39,25 @@ public class Cliente {
 		return cod_cliente;
 	}
 
+	public Cliente(@NotNull Pessoa pessoa, boolean cAtivo) {
+		super();
+		this.pessoa = pessoa;
+		this.cAtivo = cAtivo;
+	}
+
 	public Cliente() {}
 	public Cliente(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public boolean iscAtivo() {
+		return cAtivo;
+	}
+
+	public void setcAtivo(boolean cAtivo) {
+		this.cAtivo = cAtivo;
 	} 
+	
 	
 	
 }
