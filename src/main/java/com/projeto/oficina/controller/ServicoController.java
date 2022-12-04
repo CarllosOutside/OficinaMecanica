@@ -32,7 +32,7 @@ import com.projeto.oficina.repository.ServicoRepo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class ServicoController {

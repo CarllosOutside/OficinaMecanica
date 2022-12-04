@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 //RECEBE E RETORNA REQUISICOES HTTP ATRAVES DO ENDEREÇO /API
-@CrossOrigin(origins = {"https://carllosoutside.github.io/OfGUI"})
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class ClienteController {

@@ -38,7 +38,7 @@ import com.projeto.oficina.repository.VeiculoRepo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
-@CrossOrigin(origins = {"https://carllosoutside.github.io/OfGUI"})
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class OrdemController {
