@@ -39,7 +39,13 @@ public class Estado {
 		this.uf = uf;
 		this.region_id = region_id;
 	}
+	
 
+	public Estado(String name, char[] uf) {
+		super();
+		this.name = name;
+		this.uf = uf;
+	}
 	//GETTERS E SETTERS
 	public long getUf_code() {
 		return uf_code;

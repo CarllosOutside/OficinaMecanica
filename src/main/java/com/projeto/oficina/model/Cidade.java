@@ -47,7 +47,13 @@ public class Cidade {
 		public void setCode(long code) {
 			this.code = code;
 		}
+		
 
+		public Cidade(String name, Estado state_id) {
+			super();
+			this.name = name;
+			this.state_id = state_id;
+		}
 		public Cidade(long code, String name, long estado, Estado state_id) {
 			this.code = code;
 			this.name = name;
