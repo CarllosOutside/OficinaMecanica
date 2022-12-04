@@ -46,7 +46,7 @@ public class OrdemServico implements Serializable{
 		private Veiculo veiculo; // é preciso haver uma pessoa
 		
 		@Temporal(TemporalType.DATE)
-		@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT-3")
+		@JsonFormat(pattern = "yyyy-MM-dd")
 		private Date dataAbertura;
 		
 		private float valorTotalServicos;
