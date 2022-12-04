@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="user")
+@Table(name="usuarios")
 public class UserModel {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,6 +41,7 @@ public class UserModel {
 		return id;
 	}
 
+	public UserModel() {}
 	public UserModel(String nome, String senha) {
 		super();
 		this.nome = nome;
